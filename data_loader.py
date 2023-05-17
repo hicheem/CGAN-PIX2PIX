@@ -10,7 +10,7 @@ class DataLoader():
         self.path_to_input_images_folder = 'PATH to input'
         self.path_to_output_images_folder = 'PATH to output'
 
-    def load_data(self, batch_size=1, is_testing=False):
+    def load_data(self, output_gray = False, batch_size=1, is_testing=False):
         
         path_input_images = os.listdir(self.path_to_input_images_folder)
         path_input_images.sort()
@@ -25,10 +25,11 @@ class DataLoader():
         for i in batch_images:
             input_image = self.imread(self.path_to_input_images_folder + path_input_images[i])
             output_image = plt.imread(self.path_to_output_images_folder + path_output_images[i])
-            if len(output_image.shape) == 3:
-                r, g, b = output_image[:,:,0], output_image[:,:,1], output_image[:,:,2]
-                gray = 0.2989 * r + 0.5870 * g + 0.1140 * b
-                output_image = gray
+            if(output_gray): #Condition if the output image of the Pix2Pix model is a gray image
+                if len(output_image.shape) == 3:
+                    r, g, b = output_image[:,:,0], output_image[:,:,1], output_image[:,:,2]
+                    gray = 0.2989 * r + 0.5870 * g + 0.1140 * b
+                    output_image = gray
             
             img_A, img_B = output_image, input_image
 
